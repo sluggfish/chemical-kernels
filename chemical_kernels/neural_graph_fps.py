@@ -111,6 +111,7 @@ def neural_graph_fps(target_name, input_path, len_smi):
 #fp_length: 7 fp_depth: 8 conv_width: 60 h1_size: 100
 #Neural test R2: 0.9314066399774756
     max_r2 = 0
+    fp_length_opt, fp_length_opt, conv_width_opt = fp_lengths[0], fp_depths[0], conv_widths[0]
     for fp_length in fp_lengths:
         for fp_depth in fp_depths:
             for conv_width in conv_widths:
@@ -121,8 +122,13 @@ def neural_graph_fps(target_name, input_path, len_smi):
                                         h1_size=h1_size,     # Size of hidden layer of network on top of fps.
                                         L2_reg=np.exp(-2))
                     test_r2_neural = run_conv_experiment(model_params)
+                    if max_r2 < test_r2_neural:
+                        fp_length_opt = fp_length
+                        fp_depth_opt = fp_depth
+                        conv_width_opt = conv_width
                     max_r2 = max(test_r2_neural, max_r2)
 
-    print ("fp_length:", fp_length, "fp_depth:", fp_depth, "conv_width:", conv_width, "h1_size:", h1_size)
-    print ("Neural test R2:", test_r2_neural)
-                    
+    print ("fp_length:", fp_length_opt, "fp_depth:", fp_depth_opt, "conv_width:", conv_width_opt, "h1_size:", h1_size)
+    print ("Neural test R2:", max_r2)
+
+
