@@ -1,6 +1,7 @@
 import glob, os, re
 import csv
 from random import shuffle
+import random
 
 random.seed(1)
 
